@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: rgb(224, 202, 157);
+        color: black;
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: rgb(224, 202, 157);
+        color: black;
+        padding: 10px;
+      }
+
+      nav a {
+        color: black;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 2rem;
+      }
+
+      .left-align h1 {
+        color: brown;
+        margin: 0;
+        font-weight: bold;
+        font-size: 2rem;
+      }
+
+      .right-align {
+        display: flex;
+        gap: 15px;
+      }
+
+      .left-aligned-input {
+        width: calc(
+          100% - 10px
+        ); /* Make the input boxes take up the available width */
+        box-sizing: border-box; /* Include padding and border in the input box width */
+        margin-bottom: 10px; /* Add space between input boxes */
+      }
+
+      label {
+        display: inline-block; /* Set labels to display as inline-block */
+        margin-bottom: 5px; /* Add space below each label */
+      }
+
+      .form-container {
+        max-width: 600px;
+        margin: 0 auto;
+        flex-direction: column;
+        display: flex; /* Add display: flex to make the children flex items */
+      }
+
+      .button-container {
+        margin-left: auto; /* Add this to align the button to the right */
+      }
+
+      .add-button {
+        background-color: rgb(197, 169, 112);
+        color: brown;
+        padding: 10px 15px;
+        font-size: 1rem;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+      .search-button {
+        background-color: rgb(197, 169, 112);
+        color: brown;
+        padding: 10px 15px;
+        font-size: 1rem;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+
+      .add-button:hover {
+        background-color: brown;
+        color: rgb(197, 169, 112);
+      }
+      .search-button:hover {
+        background-color: brown;
+        color: rgb(197, 169, 112);
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 20px; /* Adjust the margin as needed */
+      }
+
+      th,
+      td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #ccc;
+      }
+
+      tr:nth-child(even) {
+        background-color: #fff;
+      }
+
+      tr:nth-child(odd) {
+        background-color: #eee;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <div class="left-align">
+          <a href="index.html"><h1>Guitar Inventory</h1></a>
+        </div>
+        <div class="right-align">
+          <a href="about.html">About</a>
+          <a href="add.html">Add</a>
+          <a href="search.html">Search</a>
+        </div>
+      </nav>
+    </header>
+    <div class="form-container">
+      <div>
+        <label for="">Serial number:</label>
+        <input id="serialnumber" class="left-aligned-input" />
+      </div>
+      <div>
+        <label for="">Price:</label>
+        <input id="price" class="left-aligned-input" />
+      </div>
+      <div>
+        <label for="">Builder:</label>
+        <input id="builder" class="left-aligned-input" />
+      </div>
+      <div>
+        <label for="">Model:</label>
+        <input id="model" class="left-aligned-input" />
+      </div>
+      <div>
+        <label for="">Type:</label>
+        <input id="type" class="left-aligned-input" />
+      </div>
+      <div>
+        <label for="">Back wood:</label>
+        <input id="backwood" class="left-aligned-input" />
+      </div>
+      <div>
+        <label for="">Top wood:</label>
+        <input id="topwood" class="left-aligned-input" />
+      </div>
+      <div class="button-container">
+        <button type="button" class="search-button" onclick="search()">
+          Search
+        </button>
+      </div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Serial Number</th>
+          <th>Price</th>
+          <th>Builder</th>
+          <th>Model</th>
+          <th>Type</th>
+          <th>Back Wood</th>
+          <th>Top Wood</th>
+        </tr>
+      </thead>
+      <tbody id="searchResult"></tbody>
+    </table>
+    <script>
+      let guitars = [
+        {
+          serialNumber: "1",
+          price: 1000,
+          builder: "Fender",
+          model: "Stratocaster",
+          type: "Electric",
+          backWood: "Alder",
+          topWood: "Maple",
+        },
+        {
+          serialNumber: "2",
+          price: 1500,
+          builder: "Gibson",
+          model: "Les Paul",
+          type: "Electric",
+          backWood: "Mahogany",
+          topWood: "Maple",
+        },
+        {
+          serialNumber: "3",
+          price: 800,
+          builder: "Martin",
+          model: "D-28",
+          type: "Acoustic",
+          backWood: "Cocobolo",
+          topWood: "Alder",
+        },
+        {
+          serialNumber: "4",
+          price: 1000,
+          builder: "Collings",
+          model: "814ce",
+          type: "Acoustic",
+          backWood: "Mahogany",
+          topWood: "Sitka",
+        },
+        {
+          serialNumber: "5",
+          price: 2500,
+          builder: "PRS",
+          model: "Custom 24",
+          type: "Electric",
+          backWood: "Mahogany",
+          topWood: "Maple",
+        },
+      ];
+
+      function search() {
+        let serialNumber = document.getElementById("serialnumber").value;
+        let price = document.getElementById("price").value;
+        let builder = document.getElementById("builder").value;
+        let model = document.getElementById("model").value;
+        let type = document.getElementById("type").value;
+        let backWood = document.getElementById("backwood").value;
+        let topWood = document.getElementById("topwood").value;
+
+        let table = document.getElementById("searchResult");
+        table.innerHTML = "";
+        for (let guitar of guitars) {
+          if (
+            (!serialNumber ||
+              guitar.serialNumber.toLowerCase() ===
+                serialNumber.toLowerCase()) &&
+            (!price || guitar.price.toString() === price) &&
+            (!builder ||
+              guitar.builder.toLowerCase() === builder.toLowerCase()) &&
+            (!model || guitar.model.toLowerCase() === model.toLowerCase()) &&
+            (!backWood ||
+              guitar.backWood.toLowerCase() === backWood.toLowerCase()) &&
+            (!topWood || guitar.topWood.toLowerCase() === topWood.toLowerCase())
+          ) {
+            console.log(guitar);
+            let row = document.createElement("tr");
+
+            // Create cells for each property
+            let serialNumberCell = document.createElement("td");
+            let priceCell = document.createElement("td");
+            let builderCell = document.createElement("td");
+            let modelCell = document.createElement("td");
+            let typeCell = document.createElement("td");
+            let backWoodCell = document.createElement("td");
+            let topWoodCell = document.createElement("td");
+
+            // Create text nodes for each property
+            let serialNumberText = document.createTextNode(guitar.serialNumber);
+            let priceText = document.createTextNode(guitar.price);
+            let builderText = document.createTextNode(guitar.builder);
+            let modelText = document.createTextNode(guitar.model);
+            let typeText = document.createTextNode(guitar.type);
+            let backWoodText = document.createTextNode(guitar.backWood);
+            let topWoodText = document.createTextNode(guitar.topWood);
+
+            // Append text nodes to cells
+            serialNumberCell.appendChild(serialNumberText);
+            priceCell.appendChild(priceText);
+            builderCell.appendChild(builderText);
+            modelCell.appendChild(modelText);
+            typeCell.appendChild(typeText);
+            backWoodCell.appendChild(backWoodText);
+            topWoodCell.appendChild(topWoodText);
+
+            // Append cells to the row
+            row.appendChild(serialNumberCell);
+            row.appendChild(priceCell);
+            row.appendChild(builderCell);
+            row.appendChild(modelCell);
+            row.appendChild(typeCell);
+            row.appendChild(backWoodCell);
+            row.appendChild(topWoodCell);
+
+            // Append the row to the table
+            table.appendChild(row);
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

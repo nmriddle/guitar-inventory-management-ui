@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: rgb(224, 202, 157);
+        color: black;
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: rgb(224, 202, 157);
+        color: black;
+        padding: 10px;
+      }
+
+      nav a {
+        color: black;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 2rem;
+      }
+
+      .left-align h1 {
+        color: brown;
+        margin: 0;
+        font-weight: bold;
+        font-size: 2rem;
+      }
+
+      .right-align {
+        display: flex;
+        gap: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <div class="left-align">
+          <a href="index.html"><h1>Guitar Inventory</h1></a>
+        </div>
+        <div class="right-align">
+          <a href="about.html">About</a>
+          <a href="add.html">Add</a>
+          <a href="search.html">Search</a>
+        </div>
+      </nav>
+    </header>
+  </body>
+</html>
