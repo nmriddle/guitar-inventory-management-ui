@@ -140,32 +140,45 @@
         let backWood = document.getElementById("backwood").value;
         let topWood = document.getElementById("topwood").value;
 
-        let guitar = {
-          serialNumber: serialNumber,
-          price: price,
-          builder: builder,
-          model: model,
-          type: type,
-          backWood: backWood,
-          topWood: topWood,
-        };
-        alert("You entered:" + JSON.stringify(guitar));
-
-        //TODO
-        let request = {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(guitar),
-        };
-        let response = await fetch(host + "/guitars/add", request);
-        console.log(response);
-        if (response.status == 200) {
-          message = "The guitar was added successfully!";
+        if (
+          serialNumber === "" ||
+          price === "" ||
+          builder === "" ||
+          model === "" ||
+          type === "" ||
+          backWood === "" ||
+          topWood === ""
+        ) {
+          alert("Please enter a value for all fields.");
         } else {
+          let guitar = {
+            serialNumber: serialNumber,
+            price: price,
+            builder: builder,
+            model: model,
+            type: type,
+            backWood: backWood,
+            topWood: topWood,
+          };
+          alert("You entered:" + JSON.stringify(guitar));
+
+          //TODO
+          let request = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(guitar),
+          };
+          let response = await fetch(host + "/guitars/add", request);
           console.log(response);
-          message = "Something went wrong! Guitar data could not be saved.";
+          if (response.status == 200) {
+            message = "The guitar was added to the system.";
+          } else {
+            console.log(response);
+            message =
+              "Something went wrong. Please try again or contact the customer support team.";
+          }
+          alert(message);
         }
-        alert(message);
       }
     </script>
   </body>

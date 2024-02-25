@@ -228,7 +228,7 @@
         },
       ];
 
-      function search() {
+      async function search() {
         let serialNumber = document.getElementById("serialnumber").value;
         let price = document.getElementById("price").value;
         let builder = document.getElementById("builder").value;
@@ -239,60 +239,86 @@
 
         let table = document.getElementById("searchResult");
         table.innerHTML = "";
-        for (let guitar of guitars) {
-          if (
-            (!serialNumber ||
-              guitar.serialNumber.toLowerCase() ===
-                serialNumber.toLowerCase()) &&
-            (!price || guitar.price.toString() === price) &&
-            (!builder ||
-              guitar.builder.toLowerCase() === builder.toLowerCase()) &&
-            (!model || guitar.model.toLowerCase() === model.toLowerCase()) &&
-            (!backWood ||
-              guitar.backWood.toLowerCase() === backWood.toLowerCase()) &&
-            (!topWood || guitar.topWood.toLowerCase() === topWood.toLowerCase())
-          ) {
-            console.log(guitar);
-            let row = document.createElement("tr");
+        let host = "http://localhost:8080";
+        let searchUrl = `/search?`;
 
-            // Create cells for each property
-            let serialNumberCell = document.createElement("td");
-            let priceCell = document.createElement("td");
-            let builderCell = document.createElement("td");
-            let modelCell = document.createElement("td");
-            let typeCell = document.createElement("td");
-            let backWoodCell = document.createElement("td");
-            let topWoodCell = document.createElement("td");
+        if (serialNumber) searchUrl += `serialNumber=${serialNumber}&`;
+        if (price) searchUrl += `price=${price}&`;
+        if (builder) searchUrl += `builder=${builder}&`;
+        if (model) searchUrl += `model=${model}&`;
+        if (type) searchUrl += `type=${type}&`;
+        if (backWood) searchUrl += `backWood=${backWood}&`;
+        if (topWood) searchUrl += `topWood=${topWood}&`;
 
-            // Create text nodes for each property
-            let serialNumberText = document.createTextNode(guitar.serialNumber);
-            let priceText = document.createTextNode(guitar.price);
-            let builderText = document.createTextNode(guitar.builder);
-            let modelText = document.createTextNode(guitar.model);
-            let typeText = document.createTextNode(guitar.type);
-            let backWoodText = document.createTextNode(guitar.backWood);
-            let topWoodText = document.createTextNode(guitar.topWood);
+        // Remove trailing '&' if any
+        searchUrl = host + "/guitars" + searchUrl.slice(0, -1);
+        console.log(searchUrl);
+        let response = await fetch(searchUrl);
+        if (response.status != 200) {
+          message =
+            "Something went wrong. Please try again or contact the customer support team.";
+          alert(message);
+        } else {
+          let result = await response.json();
+          console.log(result);
+          for (let guitar of result) {
+            if (
+              (!serialNumber ||
+                guitar.serialNumber.toLowerCase() ===
+                  serialNumber.toLowerCase()) &&
+              (!price || guitar.price.toString() === price) &&
+              (!builder ||
+                guitar.builder.toLowerCase() === builder.toLowerCase()) &&
+              (!model || guitar.model.toLowerCase() === model.toLowerCase()) &&
+              (!backWood ||
+                guitar.backWood.toLowerCase() === backWood.toLowerCase()) &&
+              (!topWood ||
+                guitar.topWood.toLowerCase() === topWood.toLowerCase())
+            ) {
+              // console.log(guitar);
+              let row = document.createElement("tr");
 
-            // Append text nodes to cells
-            serialNumberCell.appendChild(serialNumberText);
-            priceCell.appendChild(priceText);
-            builderCell.appendChild(builderText);
-            modelCell.appendChild(modelText);
-            typeCell.appendChild(typeText);
-            backWoodCell.appendChild(backWoodText);
-            topWoodCell.appendChild(topWoodText);
+              // Create cells for each property
+              let serialNumberCell = document.createElement("td");
+              let priceCell = document.createElement("td");
+              let builderCell = document.createElement("td");
+              let modelCell = document.createElement("td");
+              let typeCell = document.createElement("td");
+              let backWoodCell = document.createElement("td");
+              let topWoodCell = document.createElement("td");
 
-            // Append cells to the row
-            row.appendChild(serialNumberCell);
-            row.appendChild(priceCell);
-            row.appendChild(builderCell);
-            row.appendChild(modelCell);
-            row.appendChild(typeCell);
-            row.appendChild(backWoodCell);
-            row.appendChild(topWoodCell);
+              // Create text nodes for each property
+              let serialNumberText = document.createTextNode(
+                guitar.serialNumber
+              );
+              let priceText = document.createTextNode(guitar.price);
+              let builderText = document.createTextNode(guitar.builder);
+              let modelText = document.createTextNode(guitar.model);
+              let typeText = document.createTextNode(guitar.type);
+              let backWoodText = document.createTextNode(guitar.backWood);
+              let topWoodText = document.createTextNode(guitar.topWood);
 
-            // Append the row to the table
-            table.appendChild(row);
+              // Append text nodes to cells
+              serialNumberCell.appendChild(serialNumberText);
+              priceCell.appendChild(priceText);
+              builderCell.appendChild(builderText);
+              modelCell.appendChild(modelText);
+              typeCell.appendChild(typeText);
+              backWoodCell.appendChild(backWoodText);
+              topWoodCell.appendChild(topWoodText);
+
+              // Append cells to the row
+              row.appendChild(serialNumberCell);
+              row.appendChild(priceCell);
+              row.appendChild(builderCell);
+              row.appendChild(modelCell);
+              row.appendChild(typeCell);
+              row.appendChild(backWoodCell);
+              row.appendChild(topWoodCell);
+
+              // Append the row to the table
+              table.appendChild(row);
+            }
           }
         }
       }
